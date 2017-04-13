@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/BahnAlgorithmus.iml" filepath="$PROJECT_DIR$/BahnAlgorithmus.iml" />
+      <module fileurl="file://$PROJECT_DIR$/BahnAlgo.iml" filepath="$PROJECT_DIR$/BahnAlgo.iml" />
     </modules>
   </component>
 </project>
