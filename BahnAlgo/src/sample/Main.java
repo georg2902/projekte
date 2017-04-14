@@ -34,7 +34,7 @@ public class Main extends Application {
         Feld feld = new Feld(500,500);
         for (int i = 0; i < 500; i=i+20) {
             for (int j = 0; j < 500; j=j+20) {
-                feld.raster[i][j] = new Kaestchen(20,20,20,20);
+                feld.raster[i][j] = new Kaestchen(20,20,20,20,i,j);
                 Kaestchen kaestchen = feld.raster[i][j];
                 //grid.add(new Label(kaestchen.getWert()+""),i,j);
                 grid.add(kaestchen,i,j);
@@ -66,9 +66,11 @@ public class Main extends Application {
 
             for (int i = 0; i < 500; i=i+20) {
                 for (int j = 0; j < 500; j=j+20) {
-
-
-
+                    try {
+                        feld.setzePotential(feld.raster[i][j]);
+                    }catch (ArrayIndexOutOfBoundsException e){
+                        //Feldgrenze
+                    }
 
                 }
             }

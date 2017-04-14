@@ -2,6 +2,11 @@ package sample;
 
 import javafx.scene.paint.Color;
 
+import javax.swing.*;
+import java.util.LinkedList;
+import java.util.PriorityQueue;
+import java.util.Queue;
+
 /**
  * Created by Georg on 04.04.2017.
  */
@@ -11,14 +16,15 @@ public class Feld {
     private boolean startGesetzt;
     private boolean zielGesetzt;
     int potential;
-
+    Queue<Kaestchen> queue;
     Kaestchen[][] raster;
 
     public Feld(int x, int y){
         this.groesseX = x;
         this.groesseY = y;
         raster = new Kaestchen[groesseX][groesseY];
-        this.potential=-1;
+        this.potential=0;
+        this.queue = new LinkedList<>();
     }
 
     public boolean isStartGesetzt() {
@@ -32,6 +38,7 @@ public class Feld {
     public boolean isZielGesetzt() {
         return zielGesetzt;
     }
+
     public int getPotential(){
         this.potential++;
         return this.potential;
@@ -99,7 +106,61 @@ public class Feld {
             System.out.println("belegt");
         }
     }
+    public Kaestchen[] getNachbarn(Kaestchen k){
+        int i = k.koordI;
+        int j = k.koordJ;
+        Kaestchen[] nachbarn = new Kaestchen[4];
+        nachbarn[0] = raster[i][j-20];
+        nachbarn[1] = raster[i+20][j];
+        nachbarn[2] = raster[i][j+20];
+        nachbarn[3] = raster[i-20][j];
+        return nachbarn;
+    }
+    public void setzePotential(Kaestchen k){
+        Kaestchen[] nachbarn = getNachbarn(k);
+            try {
+                if (k.isBesucht()) {
+                    int x = potential;
 
+
+                    if (!nachbarn[0].isBesucht()) {
+                        nachbarn[0].setWert(x);
+                        nachbarn[0].setBesucht(true);
+                        queue.add(nachbarn[0]);
+                    }
+                    if (!nachbarn[1].isBesucht()) {
+                        nachbarn[1].setWert(x);
+                        nachbarn[1].setBesucht(true);
+                        queue.add(nachbarn[1]);
+                    }
+                    if (!nachbarn[2].isBesucht()) {
+                        nachbarn[2].setWert(x);
+                        nachbarn[2].setBesucht(true);
+                        queue.add(nachbarn[2]);
+
+                    }
+                    if (!nachbarn[3].isBesucht()) {
+                        nachbarn[3].setWert(x);
+                        nachbarn[3].setBesucht(true);
+                        queue.add(nachbarn[3]);
+
+                    }
+                    if(!queue.isEmpty()) {
+                        queueBearbeiten();
+                    }
+                }
+            } catch (ArrayIndexOutOfBoundsException e) {
+                //Grenze
+            }
+
+    }
+
+    public void queueBearbeiten(){
+        Kaestchen k = queue.poll();
+        getPotential();
+        setzePotential(k);
+
+    }
     public void setPotential(int i, int j){
         try {
             int x = getPotential();
