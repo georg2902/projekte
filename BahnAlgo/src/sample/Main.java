@@ -12,6 +12,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -68,12 +69,14 @@ public class Main extends Application {
                 for (int j = 0; j < 500; j=j+20) {
                     try {
                         feld.setzePotential(feld.raster[i][j]);
+
                     }catch (ArrayIndexOutOfBoundsException e){
                         //Feldgrenze
                     }
 
                 }
             }
+
 
         });
 

@@ -31,8 +31,7 @@ public class Kaestchen extends Rectangle implements Serializable{
 
     public void setStart(boolean start) {
         this.start = start;
-        this.besucht = true;
-        this.wert = 0;
+
     }
 
     public boolean isZiel() {
@@ -50,6 +49,8 @@ public class Kaestchen extends Rectangle implements Serializable{
 
     public void setZiel(boolean ziel) {
         this.ziel = ziel;
+        this.besucht = true;
+        this.wert = 0;
     }
 
     public boolean isBelegt() {

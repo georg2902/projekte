@@ -16,6 +16,8 @@ public class Feld {
     private boolean startGesetzt;
     private boolean zielGesetzt;
     int potential;
+    int koordX = 0;
+    int koordY = 0;
     Queue<Kaestchen> queue;
     Kaestchen[][] raster;
 
@@ -23,7 +25,7 @@ public class Feld {
         this.groesseX = x;
         this.groesseY = y;
         raster = new Kaestchen[groesseX][groesseY];
-        this.potential=0;
+        this.potential=1;
         this.queue = new LinkedList<>();
     }
 
@@ -117,48 +119,94 @@ public class Feld {
         return nachbarn;
     }
     public void setzePotential(Kaestchen k){
-        Kaestchen[] nachbarn = getNachbarn(k);
-            try {
-                if (k.isBesucht()) {
-                    int x = potential;
+        System.out.println(k.koordI + "," + k.koordJ);
+        if (queue.isEmpty() && k.isBesucht()) {
+
+            queue.add(k);
+            System.out.println("queue empty");
 
 
-                    if (!nachbarn[0].isBesucht()) {
-                        nachbarn[0].setWert(x);
-                        nachbarn[0].setBesucht(true);
-                        queue.add(nachbarn[0]);
-                    }
-                    if (!nachbarn[1].isBesucht()) {
-                        nachbarn[1].setWert(x);
-                        nachbarn[1].setBesucht(true);
-                        queue.add(nachbarn[1]);
-                    }
-                    if (!nachbarn[2].isBesucht()) {
-                        nachbarn[2].setWert(x);
-                        nachbarn[2].setBesucht(true);
-                        queue.add(nachbarn[2]);
-
-                    }
-                    if (!nachbarn[3].isBesucht()) {
-                        nachbarn[3].setWert(x);
-                        nachbarn[3].setBesucht(true);
-                        queue.add(nachbarn[3]);
-
-                    }
-                    if(!queue.isEmpty()) {
-                        queueBearbeiten();
-                    }
-                }
-            } catch (ArrayIndexOutOfBoundsException e) {
-                //Grenze
+        }
+        else if (!queue.isEmpty()) {
+            System.out.println("queue not empty");
+            while(!queue.isEmpty()) {
+                queueBearbeiten();
             }
+            potential++;
+
+
+
+        }
+
+
+
+
 
     }
-
+    public void addKaestchenToQueue(Kaestchen k) {
+        try {
+            Kaestchen[] nachbarn = getNachbarn(k);
+            if (!nachbarn[0].isBesucht()) {
+                queue.add(nachbarn[0]);
+                System.out.println(" add nachbar 0");
+            }
+            if (!nachbarn[1].isBesucht()) {
+                queue.add(nachbarn[1]);
+                System.out.println("add nachbar 1");
+            }
+            if (!nachbarn[2].isBesucht()) {
+                queue.add(nachbarn[2]);
+                System.out.println("add nachbar 2");
+            }
+            if (!nachbarn[3].isBesucht()) {
+                queue.add(nachbarn[3]);
+                System.out.println("add nachbar 3");
+            }
+        } catch (ArrayIndexOutOfBoundsException e) {
+            //Feldgrenze
+        }
+    }
     public void queueBearbeiten(){
-        Kaestchen k = queue.poll();
-        getPotential();
-        setzePotential(k);
+        try {
+            Kaestchen k = queue.poll();
+            System.out.println("queue: "+k.koordI+","+k.koordJ);
+            //Kaestchen[] nachbarn = getNachbarn(k);
+
+                if(!k.isBesucht()) {
+
+                    k.setBesucht(true);
+                    k.setWert(potential);
+
+                }
+            addKaestchenToQueue(k);
+/*
+                if (!nachbarn[0].isBesucht()) {
+                    nachbarn[0].setBesucht(true);
+                    nachbarn[0].setWert(x);
+
+                }
+                if (!nachbarn[1].isBesucht()) {
+                    nachbarn[1].setWert(x);
+                    nachbarn[1].setBesucht(true);
+
+                }
+                if (!nachbarn[2].isBesucht()) {
+                    nachbarn[2].setWert(x);
+                    nachbarn[2].setBesucht(true);
+
+                }
+                if (!nachbarn[3].isBesucht()) {
+                    nachbarn[3].setWert(x);
+                    nachbarn[3].setBesucht(true);
+
+
+                }
+*/
+
+            //}
+        } catch (ArrayIndexOutOfBoundsException e) {
+            //Grenze
+        }
 
     }
     public void setPotential(int i, int j){
