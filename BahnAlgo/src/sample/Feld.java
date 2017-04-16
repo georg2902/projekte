@@ -124,7 +124,7 @@ public class Feld {
 
             queue.add(k);
             System.out.println("queue empty");
-
+            addKaestchenToQueue(k);
 
         }
         else if (!queue.isEmpty()) {
@@ -178,7 +178,7 @@ public class Feld {
                     k.setWert(potential);
 
                 }
-            addKaestchenToQueue(k);
+
 /*
                 if (!nachbarn[0].isBesucht()) {
                     nachbarn[0].setBesucht(true);
