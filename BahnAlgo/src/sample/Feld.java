@@ -122,17 +122,23 @@ public class Feld {
         System.out.println(k.koordI + "," + k.koordJ);
         if (queue.isEmpty() && k.isBesucht()) {
 
-            queue.add(k);
-            System.out.println("queue empty");
-            addKaestchenToQueue(k);
+            //queue.add(k);
 
+            System.out.println("queue empty");
+          //addKaestchenToQueue(k);
+
+        }
+        if(k.isZiel()){
+            addKaestchenToQueue(k);
+            System.out.println("add Zielpunkt");
         }
         else if (!queue.isEmpty()) {
             System.out.println("queue not empty");
             while(!queue.isEmpty()) {
                 queueBearbeiten();
+                potential++;
             }
-            potential++;
+
 
 
 
@@ -145,6 +151,7 @@ public class Feld {
     }
     public void addKaestchenToQueue(Kaestchen k) {
         try {
+
             Kaestchen[] nachbarn = getNachbarn(k);
             if (!nachbarn[0].isBesucht()) {
                 queue.add(nachbarn[0]);
@@ -162,6 +169,7 @@ public class Feld {
                 queue.add(nachbarn[3]);
                 System.out.println("add nachbar 3");
             }
+
         } catch (ArrayIndexOutOfBoundsException e) {
             //Feldgrenze
         }
@@ -176,7 +184,7 @@ public class Feld {
 
                     k.setBesucht(true);
                     k.setWert(potential);
-
+                    addKaestchenToQueue(k);
                 }
 
 /*
