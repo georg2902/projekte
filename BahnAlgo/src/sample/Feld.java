@@ -1,8 +1,11 @@
 package sample;
 
+import com.sun.deploy.util.ArrayUtil;
 import javafx.scene.paint.Color;
 
 import javax.swing.*;
+import java.awt.*;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 import java.util.Queue;
@@ -15,9 +18,6 @@ public class Feld {
     int groesseY;
     private boolean startGesetzt;
     private boolean zielGesetzt;
-    int potential;
-    int koordX = 0;
-    int koordY = 0;
     Queue<Kaestchen> queue;
     Kaestchen[][] raster;
 
@@ -25,7 +25,6 @@ public class Feld {
         this.groesseX = x;
         this.groesseY = y;
         raster = new Kaestchen[groesseX][groesseY];
-        this.potential=1;
         this.queue = new LinkedList<>();
     }
 
@@ -41,13 +40,10 @@ public class Feld {
         return zielGesetzt;
     }
 
-    public int getPotential(){
-        this.potential++;
-        return this.potential;
-    }
     public void setZielGesetzt(boolean zielGesetzt) {
         this.zielGesetzt = zielGesetzt;
     }
+
     public void rechtsKlick(Kaestchen k) {
 
         if(!k.isZiel() && !k.isStart() && !startGesetzt && !zielGesetzt){
@@ -108,9 +104,10 @@ public class Feld {
             System.out.println("belegt");
         }
     }
+
     public Kaestchen[] getNachbarn(Kaestchen k){
-        int i = k.koordI;
-        int j = k.koordJ;
+        int i = k.getKoordI();
+        int j = k.getKoordJ();
         Kaestchen[] nachbarn = new Kaestchen[4];
         nachbarn[0] = raster[i][j-20];
         nachbarn[1] = raster[i+20][j];
@@ -118,54 +115,59 @@ public class Feld {
         nachbarn[3] = raster[i-20][j];
         return nachbarn;
     }
+    public Kaestchen[] getAlleNachbarn(Kaestchen k){
+        int i = k.getKoordI();
+        int j = k.getKoordJ();
+        Kaestchen[] nachbarn = new Kaestchen[8];
+        nachbarn[0] = raster[i][j-20];
+        nachbarn[1] = raster[i+20][j-20];
+        nachbarn[2] = raster[i+20][j];
+        nachbarn[3] = raster[i+20][j+20];
+        nachbarn[4] = raster[i][j+20];
+        nachbarn[5] = raster[i-20][j+20];
+        nachbarn[6] = raster[i-20][j];
+        nachbarn[7] = raster[i-20][j-20];
+        return nachbarn;
+    }
+
     public void setzePotential(Kaestchen k){
-        System.out.println(k.koordI + "," + k.koordJ);
-        if (queue.isEmpty() && k.isBesucht()) {
-
-            //queue.add(k);
-
-            System.out.println("queue empty");
-          //addKaestchenToQueue(k);
-
-        }
+        System.out.println(k.getKoordI() + "," + k.getKoordJ());
         if(k.isZiel()){
             addKaestchenToQueue(k);
             System.out.println("add Zielpunkt");
         }
+
         else if (!queue.isEmpty()) {
             System.out.println("queue not empty");
             while(!queue.isEmpty()) {
                 queueBearbeiten();
-                potential++;
+
             }
 
-
-
-
         }
-
-
-
-
-
     }
+
     public void addKaestchenToQueue(Kaestchen k) {
         try {
 
             Kaestchen[] nachbarn = getNachbarn(k);
-            if (!nachbarn[0].isBesucht()) {
+            if (!nachbarn[0].isBesucht() && !nachbarn[0].isBelegt()) {
+                nachbarn[0].setWert(k.getWert()+1);
                 queue.add(nachbarn[0]);
                 System.out.println(" add nachbar 0");
             }
-            if (!nachbarn[1].isBesucht()) {
+            if (!nachbarn[1].isBesucht() && !nachbarn[1].isBelegt()) {
+                nachbarn[1].setWert(k.getWert()+1);
                 queue.add(nachbarn[1]);
                 System.out.println("add nachbar 1");
             }
-            if (!nachbarn[2].isBesucht()) {
+            if (!nachbarn[2].isBesucht() && !nachbarn[2].isBelegt()) {
+                nachbarn[2].setWert(k.getWert()+1);
                 queue.add(nachbarn[2]);
                 System.out.println("add nachbar 2");
             }
-            if (!nachbarn[3].isBesucht()) {
+            if (!nachbarn[3].isBesucht() && !nachbarn[3].isBelegt()) {
+                nachbarn[3].setWert(k.getWert()+1);
                 queue.add(nachbarn[3]);
                 System.out.println("add nachbar 3");
             }
@@ -174,86 +176,75 @@ public class Feld {
             //Feldgrenze
         }
     }
+
     public void queueBearbeiten(){
         try {
             Kaestchen k = queue.poll();
-            System.out.println("queue: "+k.koordI+","+k.koordJ);
-            //Kaestchen[] nachbarn = getNachbarn(k);
+            System.out.println("queue: "+k.getKoordI()+","+k.getKoordJ());
+
 
                 if(!k.isBesucht()) {
-
                     k.setBesucht(true);
-                    k.setWert(potential);
                     addKaestchenToQueue(k);
                 }
 
-/*
-                if (!nachbarn[0].isBesucht()) {
-                    nachbarn[0].setBesucht(true);
-                    nachbarn[0].setWert(x);
-
-                }
-                if (!nachbarn[1].isBesucht()) {
-                    nachbarn[1].setWert(x);
-                    nachbarn[1].setBesucht(true);
-
-                }
-                if (!nachbarn[2].isBesucht()) {
-                    nachbarn[2].setWert(x);
-                    nachbarn[2].setBesucht(true);
-
-                }
-                if (!nachbarn[3].isBesucht()) {
-                    nachbarn[3].setWert(x);
-                    nachbarn[3].setBesucht(true);
-
-
-                }
-*/
-
-            //}
         } catch (ArrayIndexOutOfBoundsException e) {
             //Grenze
         }
 
     }
-    public void setPotential(int i, int j){
-        try {
-            int x = getPotential();
-            if (raster[i][j].isStart()) {
-                raster[i][j].setWert(x);
-                x = getPotential();
-                raster[i + 20][j].setWert(x);
-                raster[i][j + 20].setWert(x);
-                raster[i - 20][j].setWert(x);
-                raster[i][j - 20].setWert(x);
 
+    public void findeWeg(Kaestchen k){
+                if(k.isStart()){
+                    k.setAbgearbeitet(true);
+                    queue.add(getNextKaestchen(k));
+                }
+
+                else if(!queue.isEmpty()){
+                    while(!queue.isEmpty()){
+                        zeichnePfad();
+                    }
+
+                }
             }
-            if(raster[i][j].isBelegt()){
-                raster[i][j].setWert(-2);
+        public void zeichnePfad(){
+            try {
+                Kaestchen k = queue.poll();
+                System.out.println("queue: "+k.getKoordI()+","+k.getKoordJ());
 
+
+                if(!k.isAbgearbeitet() && !k.isZiel() && !k.isBelegt()) {
+                    k.setAbgearbeitet(true);
+                    k.setFill(Color.YELLOW);
+                    queue.add(getNextKaestchen(k));
+                }
+
+            } catch (ArrayIndexOutOfBoundsException e) {
+                //Grenze
             }
-            if(raster[i][j].getWert() > 0){
-                x = getPotential();
-                raster[i + 20][j].setWert(x);
-                raster[i][j + 20].setWert(x);
-                raster[i - 20][j].setWert(x);
-                raster[i][j - 20].setWert(x);
-
-            }if(raster[i][j].isZiel() && raster[i][j].getWert() > -1){
-
-            }
-        }catch (ArrayIndexOutOfBoundsException e){
-            //Spielfeldgrenze erreicht
         }
 
-    }
+    public int getDifferenz(Kaestchen k1, Kaestchen k2){
+        if(k1.isBelegt() || k2.isBelegt()){
+            return 0;
+        }else {
+            int diff = k2.getWert() - k1.getWert();
+            return diff;
+        }
+        }
 
-    public void setNachbarPotential(int ii, int jj){
-        int k1 = raster[ii-1][jj].getWert();
-        int k2 = raster[ii][jj+1].getWert();
-        int k3 = raster[ii+1][jj].getWert();
-        int k4 = raster[ii][jj-1].getWert();
+    public Kaestchen getNextKaestchen(Kaestchen k){
+        Kaestchen[] kaestchen = getAlleNachbarn(k);
+        Kaestchen nextK = k;
+        int maxDiff = 0;
+        for (int i = 0; i < kaestchen.length; i++) {
 
+            if(getDifferenz(k,kaestchen[i]) < maxDiff){
+                System.out.println(getDifferenz(k,kaestchen[i]));
+                maxDiff = getDifferenz(k,kaestchen[i]);
+                nextK = kaestchen[i];
+            }
+        }
+        return nextK;
     }
 }

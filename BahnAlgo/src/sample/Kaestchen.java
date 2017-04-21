@@ -12,10 +12,20 @@ public class Kaestchen extends Rectangle implements Serializable{
     private boolean belegt;
     private boolean start;
     private boolean ziel;
+    private boolean abgearbeitet;
     private int wert;
     private boolean besucht;
-    int koordI;
-    int koordJ;
+    private int koordI;
+    private int koordJ;
+
+    public int getKoordI() {
+        return koordI;
+    }
+
+    public int getKoordJ() {
+        return koordJ;
+    }
+
 
     public boolean isBesucht() {
         return besucht;
@@ -45,6 +55,14 @@ public class Kaestchen extends Rectangle implements Serializable{
     public void setWert(int wert) {
         this.wert = wert;
 
+    }
+
+    public boolean isAbgearbeitet() {
+        return abgearbeitet;
+    }
+
+    public void setAbgearbeitet(boolean abgearbeitet) {
+        this.abgearbeitet = abgearbeitet;
     }
 
     public void setZiel(boolean ziel) {
