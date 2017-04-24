@@ -8,7 +8,7 @@ import java.io.Serializable;
 /**
  * Created by Georg on 30.03.2017.
  */
-public class Kaestchen extends Rectangle implements Serializable{
+public class Kaestchen extends Rectangle implements Serializable {
     private boolean belegt;
     private boolean start;
     private boolean ziel;
@@ -87,7 +87,7 @@ public class Kaestchen extends Rectangle implements Serializable{
         this.setFill(Color.TRANSPARENT);
         this.setStroke(Color.BLACK);
         this.setStrokeWidth(1);
-        this.wert = -1;
+        this.wert = 99;
         this.koordI = i;
         this.koordJ = j;
 
