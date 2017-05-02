@@ -87,7 +87,7 @@ public class Kaestchen extends Rectangle implements Serializable {
         this.setFill(Color.TRANSPARENT);
         this.setStroke(Color.BLACK);
         this.setStrokeWidth(1);
-        this.wert = 99;
+        this.wert = 999;
         this.koordI = i;
         this.koordJ = j;
 
